@@ -1,0 +1,31 @@
+version: '3'
+services:
+  jupyter-tutorial:
+    build: .
+    container_name: jupyter.local
+    ports:
+      - "8888:8888"
+      - "5000:5000"
+    volumes:
+      - ./work:/home/jovyan/work/
+    command: start-notebook.sh --NotebookApp.token=''
+  db:
+    container_name: 'postgres'
+    image: postgres
+    environment:
+       POSTGRES_PASSWORD: 'password123'
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgdata/data:/var/lib/postgresql/data/
+  jenkins:
+    image: 'jenkins/jenkins:lts'
+    container_name: jenkins
+    restart: always
+    ports:
+      - '8080:8080'
+      - '50000:50000'
+    volumes:
+      - './jenkins:/var/jenkins_home'
