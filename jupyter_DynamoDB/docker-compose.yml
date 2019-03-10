@@ -1,0 +1,37 @@
+#docker-compose.yml
+version: '3'
+services:
+  jupyter-tutorial:
+    build: .
+    container_name: jupyter.local
+    ports:
+      - "8888:8888"
+      - "5000:5000"
+    volumes:
+      - ./work:/home/jovyan/work/
+    command: start-notebook.sh --NotebookApp.token=''
+  mysql:
+    image: mysql
+    container_name: cc104.21.local
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/data:/data/db/
+    environment:
+      MYSQL_ROOT_PASSWORD: iii
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8070:8070"
+  dynamodb:
+    build: ./dynamodb/file
+    container_name: cc104.21.db
+    volumes:
+      - ./dynamodb/data:/home/dynamodblocal/data
+    ports:
+      - 8000:8000
+    command: -jar DynamoDBLocal.jar -dbPath ./data
+
+volumes:
+  dynamodb_data:
