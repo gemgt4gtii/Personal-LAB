@@ -1,3 +1,3 @@
 FROM jupyter/datascience-notebook
 RUN  pip install PyMySQL 
-RUN  pip install 
+RUN  pip install django
